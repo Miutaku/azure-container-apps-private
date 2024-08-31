@@ -65,7 +65,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.ORIG_CONTAINER_REGISTRY }}/magic-mirror:
+          images: ${{ env.ORIG_CONTAINER_REGISTRY }}/magic-mirror
           configuration-file: ${{ env.DOCKER_COMPOSE_PATH }}
 
     # Azure logout
