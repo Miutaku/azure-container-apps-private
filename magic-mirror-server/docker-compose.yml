@@ -2,8 +2,8 @@
 version: '3'
 services:
   magicmirror:
-    container_name: magicmirror-server
-    image: karsten13/magicmirror
+    container_name: magic-mirror-server
+    image: use_IMAGE
     restart: unless-stopped
     environment:
       - TZ=Asia/Tokyo
@@ -13,7 +13,7 @@ services:
       - OPEN_WEATHER_MAP_API_KEY
       - CALENDAR_ICS_URL_PATH
     ports:
-      - 8080:8080
+      - 80:80
 
 secrets:
   OPEN_WEATHER_MAP_LOCATION:

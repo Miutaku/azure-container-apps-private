@@ -1,5 +1,4 @@
-FROM karsten13/magicmirror:latest as magic-mirror
-WORKDIR /app
-COPY ./config /app/config
-COPY ./css /app/css
-COPY ./modules /app/modules
+FROM karsten13/magicmirror:latest
+COPY ./magic-mirror-server/config /opt/magic_mirror/config/
+COPY ./magic-mirror-server/modules /opt/magic_mirror/modules/
+COPY ./magic-mirror-server/css /opt/magic_mirror/css/
