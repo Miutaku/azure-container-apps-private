@@ -1,0 +1,17 @@
+---
+version: '3'
+services:
+  magicmirror:
+    container_name: magicmirror-server
+    image: bastilimbach/docker-magicmirror
+    restart: unless-stopped
+    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+      - ./magic-mirror-server/config:/opt/magic_mirror/config
+      - ./magic-mirror-server/modules:/opt/magic_mirror/modules
+      - ./magic-mirror-server/css/custom.css:/opt/magic_mirror/css/custom.css
+    environment:
+      - TZ=Asia/Tokyo
+    ports:
+      - 8080:8080
+
