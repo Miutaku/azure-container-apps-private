@@ -1,5 +1,5 @@
 FROM karsten13/magicmirror:latest
 WORKDIR /app
-COPY ./config /opt/magic_mirror/config
-COPY ./modules /opt/magic_mirror/modules
-ADD ./css/custom.css /opt/magic_mirror/css/custom.css
+COPY config /opt/magic_mirror/config
+COPY modules /opt/magic_mirror/modules
+COPY css /opt/magic_mirror/css
