@@ -1,4 +1,4 @@
-FROM karsten13/magicmirror:latest as magic-mirror
+FROM karsten13/magicmirror:latest
 WORKDIR /app
 COPY ./config /opt/magic_mirror/config
 COPY ./modules /opt/magic_mirror/modules
