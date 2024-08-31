@@ -31,12 +31,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: create meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.actor }}/magic-mirror-server
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=,suffix=,format=short
+
       - name: Build and push container image
         uses: docker/build-push-action@v5
         with:
           file: ./magic-mirror-server/Dockerfile
           push: true
-          tags: magic-mirror-server
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Push container image as latest
