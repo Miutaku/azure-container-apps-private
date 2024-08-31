@@ -2,8 +2,9 @@ name: Deploy to magic mirror
 
 env:
   AZURE_WEBAPP_NAME: magic-mirror-server
-  DOCKER_IMAGE: bastilimbach/docker-magicmirror
+  BASE_DOCKER_IMAGE: bastilimbach/docker-magicmirror
   DOCKER_COMPOSE_PATH: magic-mirror-server/docker-compose.yml
+  ORIG_CONTAINER_REGISTRY: ghcr.io
 
 on: 
   push:
@@ -11,10 +12,35 @@ on:
       - main
   pull_request:
     branches:
-      - "main"
+      - main
 
 jobs:
-  deploy:
+  magic-mirror-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push container image
+        uses: docker/build-push-action@v5
+        with:
+          file: ./magic-mirror-server/Dockerfile
+          push: true
+          tags: magic-mirror
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Push container image as latest
+        uses: docker/build-push-action@v5
+        with:
+          file: ./magic-mirror-server/Dockerfile
+          push: true
+          tags: magic-mirror
+          labels: latest
+
+  magic-mirror-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -24,10 +50,26 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: sed docker-compose for Azure # Replace secrets with values bsecause not always free tier
+        run: |
+          sed -i \
+          -e "s/secret_OPEN_WEATHER_MAP_LOCATION/${ secrets.OPEN_WEATHER_MAP_LOCATION }/g" \
+          -e "s/secret_OPEN_WEATHER_MAP_LOCATION_ID/${ secrets.OPEN_WEATHER_MAP_LOCATION_ID }/g" \
+          -e "s/secret_OPEN_WEATHER_MAP_API_KEY/${ secrets.OPEN_WEATHER_MAP_API_KEY }/g" \
+          -e "s/secret_CALENDAR_ICS_URL_PATH/${ secrets.CALENDAR_ICS_URL_PATH }/g" \
+          ${{ env.DOCKER_COMPOSE_PATH }}
+        shell: bash
 
-      - name: 'Deploy to Azure Web App for Container'   
+      - name: Deploy to Azure Web App for Container
         uses: azure/webapps-deploy@v2
-        with: 
+        with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.DOCKER_IMAGE }}
+          images: ${{ env.ORIG_CONTAINER_REGISTRY }}/magic-mirror:
           configuration-file: ${{ env.DOCKER_COMPOSE_PATH }}
+
+    # Azure logout
+      - name: logout
+        run: |
+          az logout
+        if: always()
