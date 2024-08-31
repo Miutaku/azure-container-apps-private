@@ -67,23 +67,25 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      - name: sed docker-compose for Azure # Replace secrets with values bsecause not always free tier
-        run: |
-          sed -i \
-          -e 's/use_IMAGE/${ env.CUSTOM_CONTAINER_REGISTRY }\/${{ github.actor }}\/magic-mirror-server/g' \
-          -e 's/secret_OPEN_WEATHER_MAP_LOCATION/${ secrets.OPEN_WEATHER_MAP_LOCATION }/g' \
-          -e 's/secret_OPEN_WEATHER_MAP_LOCATION_ID/${ secrets.OPEN_WEATHER_MAP_LOCATION_ID }/g' \
-          -e 's/secret_OPEN_WEATHER_MAP_API_KEY/${ secrets.OPEN_WEATHER_MAP_API_KEY }/g' \
-          -e 's/secret_CALENDAR_ICS_URL_PATH/${ secrets.CALENDAR_ICS_URL_PATH }/g' \
-          ${{ env.DOCKER_COMPOSE_PATH }}
-        shell: bash
+    - name: Prepare environment variables
+      run: |
+        export CUSTOM_CONTAINER_REGISTRY=${{ env.CUSTOM_CONTAINER_REGISTRY }}
+        export GITHUB_ACTOR=${{ github.actor }}
+        export OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}
+        export OPEN_WEATHER_MAP_LOCATION_ID=${{ secrets.OPEN_WEATHER_MAP_LOCATION_ID }}
+        export OPEN_WEATHER_MAP_API_KEY=${{ secrets.OPEN_WEATHER_MAP_API_KEY }}
+        export CALENDAR_ICS_URL_PATH=${{ secrets.CALENDAR_ICS_URL_PATH }}
+      
+    - name: Generate docker-compose.yml
+      run: |
+        envsubst < ${{ env.DOCKER_COMPOSE_PATH }} > ${{ env.DOCKER_COMPOSE_PATH }}.azure
 
       - name: Deploy to Azure Web App for Container
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           images: ${{ env.CUSTOM_CONTAINER_REGISTRY }}/magic-mirror-server
-          configuration-file: ${{ env.DOCKER_COMPOSE_PATH }}
+          configuration-file: ${{ env.DOCKER_COMPOSE_PATH }}.azure
 
     # Azure logout
       - name: logout
