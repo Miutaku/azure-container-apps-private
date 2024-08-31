@@ -35,7 +35,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.CUSTOM_CONTAINER_REGISTRY }}/Miutaku/magic-mirror-server
+          images: ${{ env.CUSTOM_CONTAINER_REGISTRY }}/${{ github.actor }}/magic-mirror-server
           tags: |
             type=raw,value=latest
             type=sha,prefix=,suffix=,format=short
@@ -53,7 +53,7 @@ jobs:
         with:
           file: ./magic-mirror-server/Dockerfile
           push: true
-          tags: magic-mirror-server
+          tags: ${{ steps.meta.outputs.tags }}
           labels: latest
 
   magic-mirror-deploy:
