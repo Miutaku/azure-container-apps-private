@@ -70,7 +70,7 @@ jobs:
       - name: Prepare environment variables
         run: |
           export CUSTOM_CONTAINER_REGISTRY=${{ env.CUSTOM_CONTAINER_REGISTRY }}
-          export GITHUB_ACTOR=${{ github.actor }} | tr '[:upper:]' '[:lower:]')
+          export GITHUB_ACTOR=$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')
           export OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}
           export OPEN_WEATHER_MAP_LOCATION_ID=${{ secrets.OPEN_WEATHER_MAP_LOCATION_ID }}
           export OPEN_WEATHER_MAP_API_KEY=${{ secrets.OPEN_WEATHER_MAP_API_KEY }}
