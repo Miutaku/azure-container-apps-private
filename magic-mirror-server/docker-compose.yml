@@ -3,7 +3,7 @@ version: '3'
 services:
   magicmirror:
     container_name: magic-mirror-server
-    image: use_IMAGE
+    image: ${CUSTOM_CONTAINER_REGISTRY}/${GITHUB_ACTOR}/magic-mirror-server
     restart: unless-stopped
     environment:
       - TZ=Asia/Tokyo
