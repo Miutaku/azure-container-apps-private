@@ -3,15 +3,24 @@ version: '3'
 services:
   magicmirror:
     container_name: magicmirror-server
-    image: bastilimbach/docker-magicmirror
+    image: karsten13/magicmirror
     restart: unless-stopped
-    volumes:
-#      - /etc/localtime:/etc/localtime:ro
-      - ./config:/opt/magic_mirror/config
-      - ./modules:/opt/magic_mirror/modules
-      - ./css/custom.css:/opt/magic_mirror/css/custom.css
     environment:
       - TZ=Asia/Tokyo
+    secrets:
+      - OPEN_WEATHER_MAP_LOCATION
+      - OPEN_WEATHER_MAP_LOCATION_ID
+      - OPEN_WEATHER_MAP_API_KEY
+      - CALENDAR_ICS_URL_PATH
     ports:
       - 8080:8080
 
+secrets:
+  OPEN_WEATHER_MAP_LOCATION:
+    environment: secret_OPEN_WEATHER_MAP_LOCATION
+  OPEN_WEATHER_MAP_LOCATION_ID:
+    environment: secret_OPEN_WEATHER_MAP_LOCATION_ID
+  OPEN_WEATHER_MAP_API_KEY:
+    environment: secret_OPEN_WEATHER_MAP_API_KEY
+  CALENDAR_ICS_URL_PATH:
+    environment: secret_CALENDAR_ICS_URL_PATH
