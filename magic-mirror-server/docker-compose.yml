@@ -7,9 +7,9 @@ services:
     restart: unless-stopped
     volumes:
 #      - /etc/localtime:/etc/localtime:ro
-      - ./magic-mirror-server/config:/opt/magic_mirror/config
-      - ./magic-mirror-server/modules:/opt/magic_mirror/modules
-      - ./magic-mirror-server/css/custom.css:/opt/magic_mirror/css/custom.css
+      - ./config:/opt/magic_mirror/config
+      - ./modules:/opt/magic_mirror/modules
+      - ./css/custom.css:/opt/magic_mirror/css/custom.css
     environment:
       - TZ=Asia/Tokyo
     ports:
