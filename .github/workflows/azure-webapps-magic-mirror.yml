@@ -71,10 +71,10 @@ jobs:
         run: |
           sed -i \
           -e 's/use_IMAGE/${ env.CUSTOM_CONTAINER_REGISTRY }\/${{ github.actor }}\/magic-mirror-server/g' \
-          -e "s/secret_OPEN_WEATHER_MAP_LOCATION/${ secrets.OPEN_WEATHER_MAP_LOCATION }/g" \
-          -e "s/secret_OPEN_WEATHER_MAP_LOCATION_ID/${ secrets.OPEN_WEATHER_MAP_LOCATION_ID }/g" \
-          -e "s/secret_OPEN_WEATHER_MAP_API_KEY/${ secrets.OPEN_WEATHER_MAP_API_KEY }/g" \
-          -e "s/secret_CALENDAR_ICS_URL_PATH/${ secrets.CALENDAR_ICS_URL_PATH }/g" \
+          -e 's/secret_OPEN_WEATHER_MAP_LOCATION/${ secrets.OPEN_WEATHER_MAP_LOCATION }/g' \
+          -e 's/secret_OPEN_WEATHER_MAP_LOCATION_ID/${ secrets.OPEN_WEATHER_MAP_LOCATION_ID }/g' \
+          -e 's/secret_OPEN_WEATHER_MAP_API_KEY/${ secrets.OPEN_WEATHER_MAP_API_KEY }/g' \
+          -e 's/secret_CALENDAR_ICS_URL_PATH/${ secrets.CALENDAR_ICS_URL_PATH }/g' \
           ${{ env.DOCKER_COMPOSE_PATH }}
         shell: bash
 
