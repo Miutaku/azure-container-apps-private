@@ -67,18 +67,19 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-    - name: Prepare environment variables
-      run: |
-        export CUSTOM_CONTAINER_REGISTRY=${{ env.CUSTOM_CONTAINER_REGISTRY }}
-        export GITHUB_ACTOR=${{ github.actor }}
-        export OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}
-        export OPEN_WEATHER_MAP_LOCATION_ID=${{ secrets.OPEN_WEATHER_MAP_LOCATION_ID }}
-        export OPEN_WEATHER_MAP_API_KEY=${{ secrets.OPEN_WEATHER_MAP_API_KEY }}
-        export CALENDAR_ICS_URL_PATH=${{ secrets.CALENDAR_ICS_URL_PATH }}
-      
-    - name: Generate docker-compose.yml
-      run: |
-        envsubst < ${{ env.DOCKER_COMPOSE_PATH }} > ${{ env.DOCKER_COMPOSE_PATH }}.azure
+      - name: Prepare environment variables
+        run: |
+          export CUSTOM_CONTAINER_REGISTRY=${{ env.CUSTOM_CONTAINER_REGISTRY }}
+          export GITHUB_ACTOR=${{ github.actor }}
+          export OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}
+          export OPEN_WEATHER_MAP_LOCATION_ID=${{ secrets.OPEN_WEATHER_MAP_LOCATION_ID }}
+          export OPEN_WEATHER_MAP_API_KEY=${{ secrets.OPEN_WEATHER_MAP_API_KEY }}
+          export CALENDAR_ICS_URL_PATH=${{ secrets.CALENDAR_ICS_URL_PATH }}
+        shell: bash
+
+      - name: Generate docker-compose.yml
+        run: |
+          envsubst < ${{ env.DOCKER_COMPOSE_PATH }} > ${{ env.DOCKER_COMPOSE_PATH }}.azure
 
       - name: Deploy to Azure Web App for Container
         uses: azure/webapps-deploy@v2
