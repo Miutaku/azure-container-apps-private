@@ -4,7 +4,7 @@ env:
   AZURE_WEBAPP_NAME: magic-mirror-server
   BASE_DOCKER_IMAGE: bastilimbach/docker-magicmirror
   DOCKER_COMPOSE_PATH: magic-mirror-server/docker-compose.yml
-  ORIG_CONTAINER_REGISTRY: ghcr.io
+  CUSTOM_CONTAINER_REGISTRY: ghcr.io
 
 on: 
   push:
@@ -29,7 +29,7 @@ jobs:
         with:
           file: ./magic-mirror-server/Dockerfile
           push: true
-          tags: magic-mirror
+          tags: magic-mirror-server
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Push container image as latest
@@ -37,7 +37,7 @@ jobs:
         with:
           file: ./magic-mirror-server/Dockerfile
           push: true
-          tags: magic-mirror
+          tags: magic-mirror-server
           labels: latest
 
   magic-mirror-deploy:
@@ -54,6 +54,7 @@ jobs:
       - name: sed docker-compose for Azure # Replace secrets with values bsecause not always free tier
         run: |
           sed -i \
+          -e "s/use_IMAGE/${ env.CUSTOM_CONTAINER_REGISTRY }\/magic-mirror-server/g" \
           -e "s/secret_OPEN_WEATHER_MAP_LOCATION/${ secrets.OPEN_WEATHER_MAP_LOCATION }/g" \
           -e "s/secret_OPEN_WEATHER_MAP_LOCATION_ID/${ secrets.OPEN_WEATHER_MAP_LOCATION_ID }/g" \
           -e "s/secret_OPEN_WEATHER_MAP_API_KEY/${ secrets.OPEN_WEATHER_MAP_API_KEY }/g" \
@@ -65,7 +66,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ env.ORIG_CONTAINER_REGISTRY }}/magic-mirror
+          images: ${{ env.CUSTOM_CONTAINER_REGISTRY }}/magic-mirror-server
           configuration-file: ${{ env.DOCKER_COMPOSE_PATH }}
 
     # Azure logout

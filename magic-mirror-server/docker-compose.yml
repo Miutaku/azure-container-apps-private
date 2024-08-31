@@ -2,8 +2,8 @@
 version: '3'
 services:
   magicmirror:
-    container_name: magicmirror-server
-    image: karsten13/magicmirror
+    container_name: magic-mirror-server
+    image: use_IMAGE
     restart: unless-stopped
     environment:
       - TZ=Asia/Tokyo
