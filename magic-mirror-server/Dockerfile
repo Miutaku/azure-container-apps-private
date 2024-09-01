@@ -1,6 +1,6 @@
 FROM karsten13/magicmirror:latest
 USER root
-RUN apt-get update && apt-get install -y librust-gobject-sys-dev
+RUN apt-get update && apt-get install -y librust-gobject-sys-dev libnss3
 RUN npm install simple-git
 
 COPY ./magic-mirror-server/config /opt/magic_mirror/config
