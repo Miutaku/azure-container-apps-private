@@ -1,6 +1,5 @@
 FROM karsten13/magicmirror:latest
 
-RUN apt-get install libgobject-2.0
 RUN npm install simple-git
 
 COPY ./magic-mirror-server/config /opt/magic_mirror/config
