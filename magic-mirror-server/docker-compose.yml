@@ -3,7 +3,7 @@ version: '3'
 services:
   magicmirror:
     container_name: magic-mirror-server
-    image: use_IMAGE
+    image: ${CUSTOM_CONTAINER_REGISTRY}/${GITHUB_ACTOR}/magic-mirror-server
     restart: unless-stopped
     environment:
       - TZ=Asia/Tokyo
@@ -17,10 +17,10 @@ services:
 
 secrets:
   OPEN_WEATHER_MAP_LOCATION:
-    environment: secret_OPEN_WEATHER_MAP_LOCATION
+    environment: ${OPEN_WEATHER_MAP_LOCATION}
   OPEN_WEATHER_MAP_LOCATION_ID:
-    environment: secret_OPEN_WEATHER_MAP_LOCATION_ID
+    environment: ${OPEN_WEATHER_MAP_LOCATION_ID}
   OPEN_WEATHER_MAP_API_KEY:
-    environment: secret_OPEN_WEATHER_MAP_API_KEY
+    environment: ${OPEN_WEATHER_MAP_API_KEY}
   CALENDAR_ICS_URL_PATH:
-    environment: secret_CALENDAR_ICS_URL_PATH
+    environment: ${CALENDAR_ICS_URL_PATH}
