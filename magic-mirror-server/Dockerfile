@@ -8,4 +8,4 @@ ENV DISPLAY=:0
 COPY ./magic-mirror-server/config /opt/magic_mirror/config
 COPY ./magic-mirror-server/modules /opt/magic_mirror/modules
 ADD ./magic-mirror-server/css/custom.css /opt/magic_mirror/css/custom.css
-ENTRYPOINT ["npm", "run", ,"server", "--prefix", "/opt/magic_mirror"]
+ENTRYPOINT ["/usr/local/bin/node", "serveronly"]
