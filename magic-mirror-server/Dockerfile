@@ -1,5 +1,5 @@
 FROM karsten13/magicmirror:latest
-
+USER root
 RUN npm install simple-git
 
 COPY ./magic-mirror-server/config /opt/magic_mirror/config
