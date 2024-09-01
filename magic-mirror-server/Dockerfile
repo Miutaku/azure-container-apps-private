@@ -1,6 +1,6 @@
 FROM karsten13/magicmirror:latest
 USER root
-RUN apt-get install libgobject-2.0-0
+RUN apt-get install librust-gobject-sys-dev
 RUN npm install simple-git
 
 COPY ./magic-mirror-server/config /opt/magic_mirror/config
